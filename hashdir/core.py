@@ -188,9 +188,9 @@ def get_files_to_hash(paths: List[str], excluded: List[str]) -> List[FileEntry]:
             yield from get_directory_files(path_str, excluded)
 
 
-def get_hash_function(
+def get_hash_function(  # noqa: PLR0911
     algorithm: HashAlgorithm,
-) -> Optional[Callable[[str], str]]:  # noqa: PLR0911
+) -> Optional[Callable[[str], str]]:
     if algorithm == HashAlgorithm.MD5:
         return hash_file_md5
     if algorithm == HashAlgorithm.SHA1:
