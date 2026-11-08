@@ -1,4 +1,5 @@
 import hashlib
+from pathlib import Path
 from typing import Any
 
 READ_CHUNK_SIZE = 65536  # 64KB
@@ -26,7 +27,7 @@ def hash_file_ssdeep(file_path: str) -> str:
         ) from None
 
     try:
-        fuzzy_hash = ssdeep.hash(str(path))
+        fuzzy_hash = ssdeep.hash(str(file_path))
         if fuzzy_hash and fuzzy_hash != "3::":
             return fuzzy_hash
     except Exception:  # pylint: disable=broad-exception-caught
@@ -40,17 +41,29 @@ def hash_file_tlsh(file_path: str) -> str:
         import tlsh
     except ImportError:
         raise RuntimeError(
-            "The 'tlsh' library is required for this algorithm but is not"
-            " installed. Install both system package and python module."
+            "The 'tlsh' library is required for this algorithm but is not "
+            "installed. Install both the system package and Python module."
         ) from None
 
     try:
+        tlsh_hasher = tlsh.Tlsh()
+
+        with Path(file_path).open("rb") as file_handle:
+            while True:
+                chunk = file_handle.read(READ_CHUNK_SIZE)
+
+                if not chunk:
+                    break
+
+                tlsh_hasher.update(chunk)
+
         tlsh_hasher.final()
         fuzzy_hash = tlsh_hasher.hexdigest()
 
         if fuzzy_hash and fuzzy_hash.upper() != "TNULL":
             return fuzzy_hash.upper()
-    except Exception:  # pylint: disable=broad-exception-caught
+
+    except (OSError, ValueError):
         pass
 
     return ""

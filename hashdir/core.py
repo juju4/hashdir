@@ -8,13 +8,13 @@ from typing import Callable, List, Optional
 from .algorithms import HashAlgorithm
 from .hashing import (
     hash_file_imohash,
-    hash_file_ssdeep,
-    hash_file_tlsh,
     hash_file_md5,
     hash_file_sha1,
-    hash_string_sha1,
     hash_file_sha256,
     hash_file_sha512,
+    hash_file_ssdeep,
+    hash_file_tlsh,
+    hash_string_sha1,
 )
 
 
@@ -188,7 +188,9 @@ def get_files_to_hash(paths: List[str], excluded: List[str]) -> List[FileEntry]:
             yield from get_directory_files(path_str, excluded)
 
 
-def get_hash_function(algorithm: HashAlgorithm) -> Optional[Callable[[str], str]]:
+def get_hash_function(
+    algorithm: HashAlgorithm,
+) -> Optional[Callable[[str], str]]:  # noqa: PLR0911
     if algorithm == HashAlgorithm.MD5:
         return hash_file_md5
     if algorithm == HashAlgorithm.SHA1:
