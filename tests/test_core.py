@@ -33,6 +33,34 @@ class TestCore(HashdirTestCase):
             result.entries[0].file_hash, "00958efb88e1841b92055be5b421a795"
         )
 
+    def test_hash_directory_sha256_no_exclusion(self):
+        """Verify directory hashing with SHA256 when no exclusions are applied."""
+        result = hash_paths([self.test_dir], HashAlgorithm.SHA256, [])
+
+        # Verify the structure and sorting of the result entries
+        self.assertEqual(len(result.entries), 6)
+
+        # Spot-check the first entry (sorted primarily by hash)
+        self.assertEqual(result.entries[1].rel_path, "subdir2/fileE.txt")
+        self.assertEqual(
+            result.entries[1].file_hash,
+            "50339c9cd526778eba486c7b79467d3faf0b000345b1454fc3d59353ddefd250",
+        )
+
+    def test_hash_directory_sha512_no_exclusion(self):
+        """Verify directory hashing with SHA512 when no exclusions are applied."""
+        result = hash_paths([self.test_dir], HashAlgorithm.SHA512, [])
+
+        # Verify the structure and sorting of the result entries
+        self.assertEqual(len(result.entries), 6)
+
+        # Spot-check the first entry (sorted primarily by hash)
+        self.assertEqual(result.entries[1].rel_path, "subdir2/fileE.txt")
+        self.assertEqual(
+            result.entries[1].file_hash,
+            "1eeb3abec5d192c9a540209a1a60c76bac3e5d20f443c1dc9596070baa410e3737563ab8206da7212bc4c8d851c195dea0b218e95cbbe3c9202a0cc06f971a89",
+        )
+
     def test_hash_directory_imohash(self):
         """Verify directory hashing with the imohash algorithm."""
         result = hash_paths([self.test_dir], HashAlgorithm.IMOHASH, [])

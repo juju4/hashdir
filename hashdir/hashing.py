@@ -12,7 +12,48 @@ def hash_file_imohash(file_path: str) -> str:
             "The 'imohash' library is required for this algorithm but is not"
             " installed. Install it using: pip install 'hashdir[imohash]'"
         ) from None
+
     return imohash.hashfile(file_path, hexdigest=True)
+
+
+def hash_file_ssdeep(file_path: str) -> str:
+    try:
+        import ssdeep
+    except ImportError:
+        raise RuntimeError(
+            "The 'ssdeep' library is required for this algorithm but is not"
+            " installed. Install both system package and python module."
+        ) from None
+
+    try:
+        fuzzy_hash = ssdeep.hash(str(path))
+        if fuzzy_hash and fuzzy_hash != "3::":
+            return fuzzy_hash
+    except Exception:  # pylint: disable=broad-exception-caught
+        pass
+
+    return ""
+
+
+def hash_file_tlsh(file_path: str) -> str:
+    try:
+        import tlsh
+    except ImportError:
+        raise RuntimeError(
+            "The 'tlsh' library is required for this algorithm but is not"
+            " installed. Install both system package and python module."
+        ) from None
+
+    try:
+        tlsh_hasher.final()
+        fuzzy_hash = tlsh_hasher.hexdigest()
+
+        if fuzzy_hash and fuzzy_hash.upper() != "TNULL":
+            return fuzzy_hash.upper()
+    except Exception:  # pylint: disable=broad-exception-caught
+        pass
+
+    return ""
 
 
 def hash_file_md5(file_path: str) -> str:
@@ -22,6 +63,16 @@ def hash_file_md5(file_path: str) -> str:
 
 def hash_file_sha1(file_path: str) -> str:
     hash_obj = hashlib.sha1()
+    return hash_file_hashlib(file_path, hash_obj)
+
+
+def hash_file_sha256(file_path: str) -> str:
+    hash_obj = hashlib.sha256()
+    return hash_file_hashlib(file_path, hash_obj)
+
+
+def hash_file_sha512(file_path: str) -> str:
+    hash_obj = hashlib.sha512()
     return hash_file_hashlib(file_path, hash_obj)
 
 

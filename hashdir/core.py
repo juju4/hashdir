@@ -6,7 +6,16 @@ from pathlib import Path, PurePath
 from typing import Callable, List, Optional
 
 from .algorithms import HashAlgorithm
-from .hashing import hash_file_imohash, hash_file_md5, hash_file_sha1, hash_string_sha1
+from .hashing import (
+    hash_file_imohash,
+    hash_file_ssdeep,
+    hash_file_tlsh,
+    hash_file_md5,
+    hash_file_sha1,
+    hash_string_sha1,
+    hash_file_sha256,
+    hash_file_sha512,
+)
 
 
 @dataclass(frozen=True)
@@ -184,8 +193,16 @@ def get_hash_function(algorithm: HashAlgorithm) -> Optional[Callable[[str], str]
         return hash_file_md5
     if algorithm == HashAlgorithm.SHA1:
         return hash_file_sha1
+    if algorithm == HashAlgorithm.SHA256:
+        return hash_file_sha256
+    if algorithm == HashAlgorithm.SHA512:
+        return hash_file_sha512
     if algorithm == HashAlgorithm.IMOHASH:
         return hash_file_imohash
+    if algorithm == HashAlgorithm.SSDEEP:
+        return hash_file_ssdeep
+    if algorithm == HashAlgorithm.TLSH:
+        return hash_file_tlsh
     return None
 
 
