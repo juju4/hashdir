@@ -105,7 +105,7 @@ Hashdir performs the following steps to ensure a deterministic and stable aggreg
 
 ## Assumptions and Limitations
 
-*   **Symlinks**: 
+*   **Symlinks**:
     *   **Direct Arguments**: Passing a symlink as a direct input path is not supported and will raise a `ValueError`.
     *   **Traversal**: `hashdir` ignores symlinks (both files and directories) encountered during recursive scanning to prevent infinite loops and ensure the hash reflects actual content.
 *   **Hardlinks**: The tool does not perform inode-based deduplication. If multiple hardlinks to the same file exist within the scanned paths, each will be treated and hashed as a separate file entry.
