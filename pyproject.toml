@@ -34,7 +34,7 @@ imohash = [
     "imohash",
 ]
 ssdeep = [
-    "thoth-ssdeep",
+    "thoth-ssdeep>=3.4.1",
 ]
 tlsh = [
     "tlsh",
