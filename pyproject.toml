@@ -34,7 +34,7 @@ imohash = [
     "imohash",
 ]
 ssdeep = [
-    "thoth-ssdeep>=3.4.1",
+    "ssdeep",
 ]
 tlsh = [
     "tlsh",
@@ -44,7 +44,7 @@ dev = [
     "docformatter",
     "pyfakefs",
     "imohash",
-    "thoth-ssdeep",
+    "ssdeep",
     "py-tlsh"
 ]
 build = [
