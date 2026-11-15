@@ -69,3 +69,6 @@ ignore = [
     "PLC0415", # Import outside top level. Disabled for lazy importing
     "D103", # Missing docstring in public function
 ]
+
+[tool.bandit]
+exclude_dirs = ["tests"]

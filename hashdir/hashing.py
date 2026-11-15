@@ -30,7 +30,7 @@ def hash_file_ssdeep(file_path: str) -> str:
         fuzzy_hash = ssdeep.hash(str(file_path))
         if fuzzy_hash and fuzzy_hash != "3::":
             return fuzzy_hash
-    except Exception:  # pylint: disable=broad-exception-caught
+    except (OSError, ValueError):
         pass
 
     return ""
@@ -70,12 +70,12 @@ def hash_file_tlsh(file_path: str) -> str:
 
 
 def hash_file_md5(file_path: str) -> str:
-    hash_obj = hashlib.md5()
+    hash_obj = hashlib.md5()  # nosec B324
     return hash_file_hashlib(file_path, hash_obj)
 
 
 def hash_file_sha1(file_path: str) -> str:
-    hash_obj = hashlib.sha1()
+    hash_obj = hashlib.sha1()  # nosec B324
     return hash_file_hashlib(file_path, hash_obj)
 
 
@@ -100,6 +100,6 @@ def hash_file_hashlib(file_path: str, hash_obj: Any) -> str:
 
 
 def hash_string_sha1(input_str: str) -> str:
-    h = hashlib.sha1()
+    h = hashlib.sha1()  # nosec B324
     h.update(input_str.encode())
     return h.hexdigest()
