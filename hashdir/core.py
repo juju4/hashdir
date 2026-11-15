@@ -1,3 +1,5 @@
+"""Hashdir core."""
+
 import logging
 import os
 import unicodedata
@@ -188,9 +190,11 @@ def get_files_to_hash(paths: List[str], excluded: List[str]) -> Generator[FileEn
             yield from get_directory_files(path_str, excluded)
 
 
+# pylint: disable=R0911
 def get_hash_function(  # noqa: PLR0911
     algorithm: HashAlgorithm,
 ) -> Optional[Callable[[str], str]]:
+    """Get hash function from HashAlgorithm."""
     if algorithm == HashAlgorithm.MD5:
         return hash_file_md5
     if algorithm == HashAlgorithm.SHA1:
@@ -222,6 +226,7 @@ def generate_summary(sorted_file_hashes: List[HashedFileEntry]) -> str:
 def hash_files(
     algorithm: HashAlgorithm, files_to_hash: Generator[FileEntry]
 ) -> Generator[HashedFileEntry]:
+    """Hash multiple files with HashAlgorithm."""
     hash_func = get_hash_function(algorithm)
     if hash_func is None:
         raise ValueError(f"Unsupported algorithm: {algorithm}")
