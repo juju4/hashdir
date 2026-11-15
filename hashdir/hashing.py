@@ -7,7 +7,7 @@ READ_CHUNK_SIZE = 65536  # 64KB
 
 def hash_file_imohash(file_path: str) -> str:
     try:
-        import imohash
+        import imohash  # type: ignore
     except ImportError:
         raise RuntimeError(
             "The 'imohash' library is required for this algorithm but is not"
@@ -19,7 +19,7 @@ def hash_file_imohash(file_path: str) -> str:
 
 def hash_file_ssdeep(file_path: str) -> str:
     try:
-        import ssdeep
+        import ssdeep  # type: ignore
     except ImportError:
         raise RuntimeError(
             "The 'ssdeep' library is required for this algorithm but is not"
@@ -38,7 +38,7 @@ def hash_file_ssdeep(file_path: str) -> str:
 
 def hash_file_tlsh(file_path: str) -> str:
     try:
-        import tlsh
+        import tlsh  # type: ignore
     except ImportError:
         raise RuntimeError(
             "The 'tlsh' library is required for this algorithm but is not "

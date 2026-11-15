@@ -3,7 +3,8 @@ import os
 import unicodedata
 from dataclasses import dataclass
 from pathlib import Path, PurePath
-from typing import Callable, List, Optional
+from typing import Callable, List, Optional, Generator
+
 
 from .algorithms import HashAlgorithm
 from .hashing import (
@@ -95,7 +96,7 @@ def prepare_paths(paths: List[str]) -> List[str]:
     # Sorting ensures that parent directories always appear before their children
     resolved_paths.sort()
 
-    pruned = []
+    pruned: list[str] = []
     for p in resolved_paths:
         # Check if current path 'p' is a child of any path already in 'pruned'
         if not any(parent == p or parent in p.parents for parent in pruned):
@@ -147,7 +148,7 @@ def get_directory_files(path: str, excluded: List[str]):
     yield from _scandir_recursive(path, path, excluded)
 
 
-def deduplicate_file_entries(entries: List[FileEntry]) -> List[FileEntry]:
+def deduplicate_file_entries(entries: Generator[FileEntry]) -> Generator[FileEntry]:
     """Deduplicate FileEntry objects based on their absolute full_path.
 
     Sorts by rel_path first to ensure deterministic selection of the relative path if a
@@ -167,7 +168,7 @@ def deduplicate_file_entries(entries: List[FileEntry]) -> List[FileEntry]:
             yield entry
 
 
-def get_files_to_hash(paths: List[str], excluded: List[str]) -> List[FileEntry]:
+def get_files_to_hash(paths: List[str], excluded: List[str]) -> Generator[FileEntry]:
     """Resolve input paths into a flattened list of file entries.
 
     Produces a list of unique, non-excluded file entries ready for hashing.
@@ -220,8 +221,8 @@ def generate_summary(sorted_file_hashes: List[HashedFileEntry]) -> str:
 
 
 def hash_files(
-    algorithm: HashAlgorithm, files_to_hash: List[FileEntry]
-) -> List[HashedFileEntry]:
+    algorithm: HashAlgorithm, files_to_hash: Generator[FileEntry]
+) -> Generator[HashedFileEntry]:
     hash_func = get_hash_function(algorithm)
     if hash_func is None:
         raise ValueError(f"Unsupported algorithm: {algorithm}")

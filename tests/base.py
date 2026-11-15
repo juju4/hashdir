@@ -1,6 +1,6 @@
 import os
 
-from pyfakefs.fake_filesystem_unittest import TestCase
+from pyfakefs.fake_filesystem_unittest import TestCase  # type: ignore
 
 
 class HashdirTestCase(TestCase):
