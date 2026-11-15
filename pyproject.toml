@@ -34,7 +34,7 @@ imohash = [
     "imohash",
 ]
 ssdeep = [
-    "ssdeep @ git+https://github.com/DinoTools/python-ssdeep.git@2aa83ac",
+    "thoth-ssdeep==3.4.1",
 ]
 tlsh = [
     "tlsh",
@@ -44,7 +44,7 @@ dev = [
     "docformatter",
     "pyfakefs",
     "imohash",
-    "ssdeep @ git+https://github.com/DinoTools/python-ssdeep.git@2aa83ac",
+    "thoth-ssdeep==3.4.1",
     "py-tlsh"
 ]
 build = [
