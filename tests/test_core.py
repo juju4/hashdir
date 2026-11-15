@@ -1,3 +1,8 @@
+"""
+Test code - hashing
+"""
+
+# pylint: disable=C0103
 import os
 import unittest
 
@@ -58,7 +63,10 @@ class TestCore(HashdirTestCase):
         self.assertEqual(result.entries[1].rel_path, "subdir2/fileE.txt")
         self.assertEqual(
             result.entries[1].file_hash,
-            "1eeb3abec5d192c9a540209a1a60c76bac3e5d20f443c1dc9596070baa410e3737563ab8206da7212bc4c8d851c195dea0b218e95cbbe3c9202a0cc06f971a89",
+            (
+                "1eeb3abec5d192c9a540209a1a60c76bac3e5d20f443c1dc9596070baa410e"
+                "3737563ab8206da7212bc4c8d851c195dea0b218e95cbbe3c9202a0cc06f971a89"
+            ),
         )
 
     def test_hash_directory_imohash(self):
@@ -70,6 +78,32 @@ class TestCore(HashdirTestCase):
             all(len(h.file_hash) == EXPECTED_HASH_LENGTH for h in result.entries)
         )
         self.assertEqual(len(result.aggregate_hash), 40)
+
+    def test_hash_directory_ssdeep(self):
+        """Verify directory hashing with the ssdeep algorithm."""
+        result = hash_paths([self.test_dir], HashAlgorithm.SSDEEP, [])
+        self.assertTrue(len(result.entries) > 0)
+        self.assertEqual(len(result.aggregate_hash), 40)
+        self.assertEqual(result.entries[2].rel_path, "subdir2/fileE.txt")
+        self.assertEqual(
+            result.entries[2].file_hash,
+            "3:TgmiRqmHR:TgmiR1R",
+        )
+
+    def test_hash_directory_tlsh(self):
+        """Verify directory hashing with the tlsh algorithm."""
+        result = hash_paths([self.test_dir], HashAlgorithm.TLSH, [])
+        # EXPECTED_HASH_LENGTH = 72
+        self.assertTrue(len(result.entries) > 0)
+        # self.assertTrue(
+        #     all(len(h.file_hash) == EXPECTED_HASH_LENGTH for h in result.entries)
+        # )
+        self.assertEqual(len(result.aggregate_hash), 40)
+        self.assertEqual(result.entries[5].rel_path, "subdir2/fileE.txt")
+        self.assertEqual(
+            result.entries[5].file_hash,
+            "TBD",
+        )
 
     def test_hash_directory_empty_dir(self):
         """Verify that hashing an empty directory returns a valid aggregate hash."""
