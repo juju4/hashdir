@@ -45,7 +45,7 @@ dev = [
     "pyfakefs",
     "imohash",
     "ssdeep",
-    "tlsh"
+    "py-tlsh"
 ]
 build = [
     "build",
