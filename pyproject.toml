@@ -44,7 +44,6 @@ dev = [
     "docformatter",
     "pyfakefs",
     "imohash",
-    "ssdeep",
     "py-tlsh"
 ]
 build = [
