@@ -35,9 +35,9 @@ docker run --rm -v $PWD:/data ghcr.io/ozancivaner/hashdir /data/
 
 1. Clone the repository: `git clone https://github.com/user/hashdir.git && cd hashdir`
 2. Install using pipx:
-   - **Linux**: `pipx install .`
-   - **macOS**: `brew install pipx && pipx install .`
-   - **Windows**: `pip install pipx && pipx install .`
+   * **Linux**: `pipx install .`
+   * **macOS**: `brew install pipx && pipx install .`
+   * **Windows**: `pip install pipx && pipx install .`
 
 ---
 
@@ -96,20 +96,21 @@ for entry in result.entries:
 ## Algorithm
 
 Hashdir performs the following steps to ensure a deterministic and stable aggregate hash:
-- **Path Discovery & Normalization**: Resolves input paths to absolute paths, prunes redundant entries (e.g., if a directory and a file inside it are both provided), and normalizes all discovered paths and provided parameters to the NFKD Unicode form to ensure consistent handling of filenames across different operating systems and locales.
-- **Filtering**: Recursively scans directories using `os.scandir` while skipping symlinks and applying exclusion patterns to both files and directories.
-- **Hashing**: Computes the hash for each file using the selected algorithm (`md5` by default).
-- **Summary Generation**: Creates a summary string where each line contains the POSIX-style relative path and the file's hash, separated by a space.
-- **Sorting**: Entries are sorted primarily by their hash value and secondarily by their relative path. This ensures consistency regardless of filesystem traversal order.
-- **Aggregation**: Computes the final aggregate directory hash by applying the **SHA1** algorithm to the entire summary string.
+
+* **Path Discovery & Normalization**: Resolves input paths to absolute paths, prunes redundant entries (e.g., if a directory and a file inside it are both provided), and normalizes all discovered paths and provided parameters to the NFKD Unicode form to ensure consistent handling of filenames across different operating systems and locales.
+* **Filtering**: Recursively scans directories using `os.scandir` while skipping symlinks and applying exclusion patterns to both files and directories.
+* **Hashing**: Computes the hash for each file using the selected algorithm (`md5` by default).
+* **Summary Generation**: Creates a summary string where each line contains the POSIX-style relative path and the file's hash, separated by a space.
+* **Sorting**: Entries are sorted primarily by their hash value and secondarily by their relative path. This ensures consistency regardless of filesystem traversal order.
+* **Aggregation**: Computes the final aggregate directory hash by applying the **SHA1** algorithm to the entire summary string.
 
 ## Assumptions and Limitations
 
-*   **Symlinks**:
-    *   **Direct Arguments**: Passing a symlink as a direct input path is not supported and will raise a `ValueError`.
-    *   **Traversal**: `hashdir` ignores symlinks (both files and directories) encountered during recursive scanning to prevent infinite loops and ensure the hash reflects actual content.
-*   **Hardlinks**: The tool does not perform inode-based deduplication. If multiple hardlinks to the same file exist within the scanned paths, each will be treated and hashed as a separate file entry.
-*   **Filesystems**: It is assumed that the tool is operating on a standard local filesystem (POSIX or Windows). Using the tool on specialized, virtual, or network filesystems (like NFS or SMB) might result in unexpected behavior if those systems handle metadata or traversal in non-standard ways.
+* **Symlinks**:
+  * **Direct Arguments**: Passing a symlink as a direct input path is not supported and will raise a `ValueError`.
+  * **Traversal**: `hashdir` ignores symlinks (both files and directories) encountered during recursive scanning to prevent infinite loops and ensure the hash reflects actual content.
+* **Hardlinks**: The tool does not perform inode-based deduplication. If multiple hardlinks to the same file exist within the scanned paths, each will be treated and hashed as a separate file entry.
+* **Filesystems**: It is assumed that the tool is operating on a standard local filesystem (POSIX or Windows). Using the tool on specialized, virtual, or network filesystems (like NFS or SMB) might result in unexpected behavior if those systems handle metadata or traversal in non-standard ways.
 
 ---
 
@@ -117,10 +118,10 @@ Hashdir performs the following steps to ensure a deterministic and stable aggreg
 
 `hashdir` aims for deterministic and stable aggregate hashes for a given directory structure and content. However, changes in the underlying algorithm or implementation details can lead to different aggregate hashes across versions.
 
-*   **Pinned Regression Tests**: The project maintains a suite of "pinned regression tests" (`tests/test_core.py`) that assert specific aggregate hash values for known directory structures and content. These tests serve as a contract, ensuring that future changes do not inadvertently alter the hash output for these specific scenarios.
-*   **Backwards Compatibility**:
-    *   **Version 0.25.0 vs. 0.24**: The aggregate hash output generated by `hashdir` version `0.25.0` is **not backwards compatible** with version `0.24`. This change was due to refinements in path normalization and file discovery logic to improve determinism and handle edge cases more robustly.
-    *   Users relying on `hashdir` for integrity checks across different versions should be aware of these potential breaking changes. It is recommended to re-baseline expected hashes when upgrading to a new major or minor version.
+* **Pinned Regression Tests**: The project maintains a suite of "pinned regression tests" (`tests/test_core.py`) that assert specific aggregate hash values for known directory structures and content. These tests serve as a contract, ensuring that future changes do not inadvertently alter the hash output for these specific scenarios.
+* **Backwards Compatibility**:
+  * **Version 0.25.0 vs. 0.24**: The aggregate hash output generated by `hashdir` version `0.25.0` is **not backwards compatible** with version `0.24`. This change was due to refinements in path normalization and file discovery logic to improve determinism and handle edge cases more robustly.
+  * Users relying on `hashdir` for integrity checks across different versions should be aware of these potential breaking changes. It is recommended to re-baseline expected hashes when upgrading to a new major or minor version.
 
 ---
 
@@ -130,12 +131,15 @@ Contributions are welcome! To set up your development environment and ensure cod
 
 ### Setup
 
-1.  **Virtual Environment**: Create and activate a virtual environment to isolate dependencies.
+1. **Virtual Environment**: Create and activate a virtual environment to isolate dependencies.
+
     ```bash
     python3 -m venv venv
     source venv/bin/activate  # On Windows use: venv\Scripts\activate
     ```
-2.  **Install Dependencies**: Install the package in editable mode along with development tools.
+
+2. **Install Dependencies**: Install the package in editable mode along with development tools.
+
     ```bash
     pip install -e ".[dev]"
     ```
@@ -144,10 +148,11 @@ Contributions are welcome! To set up your development environment and ensure cod
 
 Before submitting a Pull Request, please run the linting tools and tests:
 
-*   **Linting**: Use the `Makefile` to run `ruff`.
-    *   Check for issues: `make check`
-    *   Automatically apply formatting fixes: `make format`
-*   **Testing**: Run the test suite to verify your changes.
+* **Linting**: Use the `Makefile` to run `ruff`.
+  * Check for issues: `make check`
+  * Automatically apply formatting fixes: `make format`
+* **Testing**: Run the test suite to verify your changes.
+
     ```bash
     make test
     ```

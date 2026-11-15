@@ -70,7 +70,7 @@ repos:
       - id: pymarkdown
         args:
           - -d
-          - MD013
+          - MD013,MD033
           - scan
   - repo: https://github.com/tcort/markdown-link-check
     rev: v3.15.0
