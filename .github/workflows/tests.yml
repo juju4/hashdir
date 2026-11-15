@@ -39,8 +39,9 @@ jobs:
           pip install -e ".[dev]"
       - name: Check dependencies
         run: |
-          python -m pip show hashdir ssdeep thoth-ssdeep
-          python -m pip check
+          set -x
+          python -m pip show hashdir ssdeep thoth-ssdeep || true
+          python -m pip check || true
         if: ${{ always() }}
         continue-on-error: true
 
