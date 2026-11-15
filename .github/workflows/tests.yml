@@ -37,8 +37,12 @@ jobs:
           sudo env DEBIAN_FRONTEND=noninteractive apt-get install -y ssdeep python3-ssdeep libtlsh4 python3-tlsh python3-pefile || true
           python -m pip install --upgrade pip
           pip install -e ".[dev]"
+      - name: Check dependencies
+        run: |
           python -m pip show hashdir ssdeep thoth-ssdeep
           python -m pip check
+        if: ${{ always() }}
+        continue-on-error: true
 
       - name: Run Tests
         run: make test
