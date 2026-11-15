@@ -1,10 +1,9 @@
-"""
-Test code - hashing
-"""
+"""Test code - hashing."""
 
 # pylint: disable=C0103
 import os
 import unittest
+
 import pytest
 
 from hashdir.algorithms import HashAlgorithm

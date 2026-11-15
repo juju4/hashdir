@@ -3,8 +3,7 @@ import os
 import unicodedata
 from dataclasses import dataclass
 from pathlib import Path, PurePath
-from typing import Callable, List, Optional, Generator
-
+from typing import Callable, Generator, List, Optional
 
 from .algorithms import HashAlgorithm
 from .hashing import (
