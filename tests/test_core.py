@@ -4,6 +4,8 @@
 import os
 import unittest
 
+import pytest
+
 from hashdir.algorithms import HashAlgorithm
 from hashdir.core import (
     hash_paths,
@@ -77,6 +79,8 @@ class TestCore(HashdirTestCase):
         )
         self.assertEqual(len(result.aggregate_hash), 40)
 
+    @pytest.mark.skip(reason="ssdeep broken dependency - unreleased")
+    @unittest.skip("ssdeep broken dependency - unreleased")
     def test_hash_directory_ssdeep(self):
         """Verify directory hashing with the ssdeep algorithm."""
         result = hash_paths([self.test_dir], HashAlgorithm.SSDEEP, [])
