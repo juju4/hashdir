@@ -26,11 +26,11 @@ class TestCore(HashdirTestCase):
         result = hash_paths([self.test_dir], HashAlgorithm.MD5, [])
 
         self.assertEqual(
-            result.aggregate_hash, "46b75a381149c7e00301c13133e7683c88224fc6"
+            result.aggregate_hash, "ecb1846bae609491964171469afe1ccfa90ea51d"
         )
 
         # Verify the structure and sorting of the result entries
-        self.assertEqual(len(result.entries), 6)
+        self.assertEqual(len(result.entries), 7)
 
         # Spot-check the first entry (sorted primarily by hash)
         self.assertEqual(result.entries[0].rel_path, "subdir2/fileE.txt")
@@ -43,12 +43,12 @@ class TestCore(HashdirTestCase):
         result = hash_paths([self.test_dir], HashAlgorithm.SHA256, [])
 
         # Verify the structure and sorting of the result entries
-        self.assertEqual(len(result.entries), 6)
+        self.assertEqual(len(result.entries), 7)
 
         # Spot-check the first entry (sorted primarily by hash)
-        self.assertEqual(result.entries[1].rel_path, "subdir2/fileE.txt")
+        self.assertEqual(result.entries[2].rel_path, "subdir2/fileE.txt")
         self.assertEqual(
-            result.entries[1].file_hash,
+            result.entries[2].file_hash,
             "50339c9cd526778eba486c7b79467d3faf0b000345b1454fc3d59353ddefd250",
         )
 
@@ -57,12 +57,12 @@ class TestCore(HashdirTestCase):
         result = hash_paths([self.test_dir], HashAlgorithm.SHA512, [])
 
         # Verify the structure and sorting of the result entries
-        self.assertEqual(len(result.entries), 6)
+        self.assertEqual(len(result.entries), 7)
 
         # Spot-check the first entry (sorted primarily by hash)
-        self.assertEqual(result.entries[1].rel_path, "subdir2/fileE.txt")
+        self.assertEqual(result.entries[2].rel_path, "subdir2/fileE.txt")
         self.assertEqual(
-            result.entries[1].file_hash,
+            result.entries[2].file_hash,
             (
                 "1eeb3abec5d192c9a540209a1a60c76bac3e5d20f443c1dc9596070baa410e"
                 "3737563ab8206da7212bc4c8d851c195dea0b218e95cbbe3c9202a0cc06f971a89"
@@ -95,16 +95,24 @@ class TestCore(HashdirTestCase):
     def test_hash_directory_tlsh(self):
         """Verify directory hashing with the tlsh algorithm."""
         result = hash_paths([self.test_dir], HashAlgorithm.TLSH, [])
-        # EXPECTED_HASH_LENGTH = 72
+        EXPECTED_HASH_LENGTH = 72
         self.assertTrue(len(result.entries) > 0)
-        # self.assertTrue(
-        #     all(len(h.file_hash) == EXPECTED_HASH_LENGTH for h in result.entries)
-        # )
+        self.assertTrue(
+            all(
+                (len(h.file_hash) == EXPECTED_HASH_LENGTH or len(h.file_hash) == 0)
+                for h in result.entries
+            )
+        )
         self.assertEqual(len(result.aggregate_hash), 40)
         self.assertEqual(result.entries[5].rel_path, "subdir2/fileE.txt")
         self.assertEqual(
             result.entries[5].file_hash,
-            "TBD",
+            "",
+        )
+        self.assertEqual(result.entries[6].rel_path, "subdir2/fileF.txt")
+        self.assertEqual(
+            result.entries[6].file_hash,
+            "T1DBD09524A6514D7D1F175ADC504E44DF554FCDE301C5002517F146D1C510194440ED1D",
         )
 
     def test_hash_directory_empty_dir(self):
