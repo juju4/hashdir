@@ -3,9 +3,10 @@
 import logging
 import os
 import unicodedata
+from collections.abc import Iterator
 from dataclasses import dataclass
 from pathlib import Path, PurePath
-from typing import Callable, Generator, List, Optional
+from typing import Callable, List, Optional
 
 from .algorithms import HashAlgorithm
 from .hashing import (
@@ -149,7 +150,7 @@ def get_directory_files(path: str, excluded: List[str]):
     yield from _scandir_recursive(path, path, excluded)
 
 
-def deduplicate_file_entries(entries: Generator[FileEntry]) -> Generator[FileEntry]:
+def deduplicate_file_entries(entries: Iterator[FileEntry]) -> Iterator[FileEntry]:
     """Deduplicate FileEntry objects based on their absolute full_path.
 
     Sorts by rel_path first to ensure deterministic selection of the relative path if a
@@ -169,7 +170,7 @@ def deduplicate_file_entries(entries: Generator[FileEntry]) -> Generator[FileEnt
             yield entry
 
 
-def get_files_to_hash(paths: List[str], excluded: List[str]) -> Generator[FileEntry]:
+def get_files_to_hash(paths: List[str], excluded: List[str]) -> Iterator[FileEntry]:
     """Resolve input paths into a flattened list of file entries.
 
     Produces a list of unique, non-excluded file entries ready for hashing.
@@ -224,8 +225,8 @@ def generate_summary(sorted_file_hashes: List[HashedFileEntry]) -> str:
 
 
 def hash_files(
-    algorithm: HashAlgorithm, files_to_hash: Generator[FileEntry]
-) -> Generator[HashedFileEntry]:
+    algorithm: HashAlgorithm, files_to_hash: Iterator[FileEntry]
+) -> Iterator[HashedFileEntry]:
     """Hash multiple files with HashAlgorithm."""
     hash_func = get_hash_function(algorithm)
     if hash_func is None:
