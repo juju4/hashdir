@@ -1,5 +1,4 @@
-"""
-Tests base setup
+"""Tests base setup.
 
 Files content with pyfakefs
 """
