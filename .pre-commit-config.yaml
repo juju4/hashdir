@@ -35,7 +35,7 @@ repos:
     rev: v4.1.3
     hooks:
       - id: pylint
-        additional_dependencies: ["httpx", "pyfakefs", "pandas", "pytest", "jmespath", "python-dotenv", "polars", "hypothesis"]
+        additional_dependencies: ["httpx", "pyfakefs", "pandas", "pytest", "jmespath", "python-dotenv", "pefile"]
         args: [
                   # E1101: Instance of 'LookupDict' has no 'ok' member (no-member)
                   '--generated-member=httpx.codes.ok'
